@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   User, 
   Package, 
@@ -11,8 +12,22 @@ import {
   Phone,
   Bell
 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ProfileScreen() {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed Out",
+      description: "You have been successfully logged out."
+    });
+  };
+
   const menuItems = [
     { icon: Package, label: 'My Orders', subtitle: 'Track your orders' },
     { icon: MapPin, label: 'Saved Addresses', subtitle: 'Manage delivery addresses' },
@@ -31,19 +46,33 @@ export default function ProfileScreen() {
             <User size={36} className="text-primary" />
           </div>
           <div>
-            <h1 className="font-display text-xl font-bold text-foreground">
-              Welcome!
-            </h1>
-            <p className="text-muted-foreground text-sm">Sign in for best experience</p>
+            {user ? (
+              <>
+                <h1 className="font-display text-xl font-bold text-foreground">
+                  Welcome!
+                </h1>
+                <p className="text-muted-foreground text-sm">{user.email}</p>
+              </>
+            ) : (
+              <>
+                <h1 className="font-display text-xl font-bold text-foreground">
+                  Welcome!
+                </h1>
+                <p className="text-muted-foreground text-sm">Sign in for best experience</p>
+              </>
+            )}
           </div>
         </div>
         
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          className="w-full mt-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl btn-glow"
-        >
-          Sign In / Register
-        </motion.button>
+        {!user && (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/auth')}
+            className="w-full mt-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl btn-glow"
+          >
+            Sign In / Register
+          </motion.button>
+        )}
       </div>
 
       {/* Quick Stats */}
@@ -105,12 +134,17 @@ export default function ProfileScreen() {
       </div>
 
       {/* Logout Button */}
-      <div className="px-4">
-        <button className="w-full flex items-center justify-center gap-2 py-3 text-muted-foreground hover:text-destructive transition-colors">
-          <LogOut size={18} />
-          <span className="font-medium">Log Out</span>
-        </button>
-      </div>
+      {user && (
+        <div className="px-4">
+          <button 
+            onClick={handleSignOut}
+            className="w-full flex items-center justify-center gap-2 py-3 text-muted-foreground hover:text-destructive transition-colors"
+          >
+            <LogOut size={18} />
+            <span className="font-medium">Log Out</span>
+          </button>
+        </div>
+      )}
 
       {/* App Version */}
       <p className="text-center text-xs text-muted-foreground mt-6">
