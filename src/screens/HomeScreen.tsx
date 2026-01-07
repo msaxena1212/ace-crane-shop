@@ -2,13 +2,14 @@ import { Search, Bell, Truck, Shield, Headphones, CreditCard } from 'lucide-reac
 import { motion } from 'framer-motion';
 import ProductCard from '@/components/ProductCard';
 import CategoryCard from '@/components/CategoryCard';
-import { CATEGORIES, FEATURED_PRODUCTS, PRODUCTS } from '@/data/products';
+import { CATEGORIES, FEATURED_PRODUCTS, PRODUCTS, Product } from '@/data/products';
 
 interface HomeScreenProps {
   onNavigateToExplore: (categoryId?: string) => void;
+  onProductPress?: (product: Product) => void;
 }
 
-export default function HomeScreen({ onNavigateToExplore }: HomeScreenProps) {
+export default function HomeScreen({ onNavigateToExplore, onProductPress }: HomeScreenProps) {
   const features = [
     { icon: Truck, title: 'Fast Delivery', subtitle: 'Swift & Reliable' },
     { icon: Shield, title: 'Secure Payment', subtitle: '100% Protected' },
@@ -146,7 +147,7 @@ export default function HomeScreen({ onNavigateToExplore }: HomeScreenProps) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
             >
-              <ProductCard product={product} />
+              <ProductCard product={product} onPress={() => onProductPress?.(product)} />
             </motion.div>
           ))}
         </div>
@@ -193,7 +194,7 @@ export default function HomeScreen({ onNavigateToExplore }: HomeScreenProps) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
             >
-              <ProductCard product={product} />
+              <ProductCard product={product} onPress={() => onProductPress?.(product)} />
             </motion.div>
           ))}
         </div>
