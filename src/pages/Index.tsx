@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SplashScreen from '@/components/SplashScreen';
 import BottomNav from '@/components/BottomNav';
@@ -7,12 +7,10 @@ import ExploreScreen from '@/screens/ExploreScreen';
 import CartScreen from '@/screens/CartScreen';
 import WishlistScreen from '@/screens/WishlistScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
-import { CartProvider } from '@/context/CartContext';
-import { WishlistProvider } from '@/context/WishlistContext';
 
 type TabType = 'home' | 'explore' | 'cart' | 'wishlist' | 'profile';
 
-function AppContent() {
+export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [exploreCategoryId, setExploreCategoryId] = useState<string | undefined>();
@@ -58,15 +56,5 @@ function AppContent() {
 
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
-  );
-}
-
-export default function Index() {
-  return (
-    <CartProvider>
-      <WishlistProvider>
-        <AppContent />
-      </WishlistProvider>
-    </CartProvider>
   );
 }

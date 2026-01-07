@@ -1,15 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/context/AuthContext';
-import { useToast } from '@/hooks/use-toast';
-import { z } from 'zod';
-
-const emailSchema = z.string().trim().email({ message: "Invalid email address" });
-const passwordSchema = z.string().min(6, { message: "Password must be at least 6 characters" });
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -17,105 +11,13 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; confirmPassword?: string }>({});
   
-  const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  useEffect(() => {
-    if (!loading && user) {
-      navigate('/', { replace: true });
-    }
-  }, [user, loading, navigate]);
-
-  const validateForm = () => {
-    const newErrors: { email?: string; password?: string; confirmPassword?: string } = {};
-    
-    const emailResult = emailSchema.safeParse(email);
-    if (!emailResult.success) {
-      newErrors.email = emailResult.error.errors[0].message;
-    }
-    
-    const passwordResult = passwordSchema.safeParse(password);
-    if (!passwordResult.success) {
-      newErrors.password = passwordResult.error.errors[0].message;
-    }
-    
-    if (!isLogin && password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords don't match";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setIsLoading(true);
-    
-    try {
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast({
-              title: "Login Failed",
-              description: "Invalid email or password. Please try again.",
-              variant: "destructive"
-            });
-          } else {
-            toast({
-              title: "Error",
-              description: error.message,
-              variant: "destructive"
-            });
-          }
-        } else {
-          toast({
-            title: "Welcome back!",
-            description: "You have successfully logged in."
-          });
-        }
-      } else {
-        const { error } = await signUp(email, password);
-        if (error) {
-          if (error.message.includes('already registered')) {
-            toast({
-              title: "Account Exists",
-              description: "This email is already registered. Please log in instead.",
-              variant: "destructive"
-            });
-          } else {
-            toast({
-              title: "Error",
-              description: error.message,
-              variant: "destructive"
-            });
-          }
-        } else {
-          toast({
-            title: "Account Created!",
-            description: "Welcome to Ace Crane. Your account is ready."
-          });
-        }
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    // UI only - no action
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -167,12 +69,9 @@ export default function Auth() {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`pl-10 h-12 bg-card border-border ${errors.email ? 'border-destructive' : ''}`}
+                className="pl-10 h-12 bg-card border-border"
               />
             </div>
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email}</p>
-            )}
           </div>
 
           {/* Password Field */}
@@ -185,7 +84,7 @@ export default function Auth() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`pl-10 pr-10 h-12 bg-card border-border ${errors.password ? 'border-destructive' : ''}`}
+                className="pl-10 pr-10 h-12 bg-card border-border"
               />
               <button
                 type="button"
@@ -199,9 +98,6 @@ export default function Auth() {
                 )}
               </button>
             </div>
-            {errors.password && (
-              <p className="text-sm text-destructive">{errors.password}</p>
-            )}
           </div>
 
           {/* Confirm Password Field (Sign Up only) */}
@@ -220,12 +116,9 @@ export default function Auth() {
                   placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`pl-10 h-12 bg-card border-border ${errors.confirmPassword ? 'border-destructive' : ''}`}
+                  className="pl-10 h-12 bg-card border-border"
                 />
               </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-destructive">{errors.confirmPassword}</p>
-              )}
             </motion.div>
           )}
 
@@ -233,15 +126,8 @@ export default function Auth() {
           <Button 
             type="submit" 
             className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold mt-6"
-            disabled={isLoading}
           >
-            {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : isLogin ? (
-              'Sign In'
-            ) : (
-              'Create Account'
-            )}
+            {isLogin ? 'Sign In' : 'Create Account'}
           </Button>
         </motion.form>
 
@@ -256,10 +142,7 @@ export default function Auth() {
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <button
               type="button"
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setErrors({});
-              }}
+              onClick={() => setIsLogin(!isLogin)}
               className="text-primary font-semibold ml-2 hover:underline"
             >
               {isLogin ? 'Sign Up' : 'Sign In'}

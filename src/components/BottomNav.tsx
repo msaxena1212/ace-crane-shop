@@ -1,7 +1,5 @@
 import { Home, Search, ShoppingCart, Heart, User } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useCart } from '@/context/CartContext';
-import { useWishlist } from '@/context/WishlistContext';
 
 type TabType = 'home' | 'explore' | 'cart' | 'wishlist' | 'profile';
 
@@ -11,14 +9,11 @@ interface BottomNavProps {
 }
 
 export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
-  const { totalItems: cartItems } = useCart();
-  const { totalItems: wishlistItems } = useWishlist();
-
   const tabs = [
     { id: 'home' as TabType, icon: Home, label: 'Home' },
     { id: 'explore' as TabType, icon: Search, label: 'Explore' },
-    { id: 'cart' as TabType, icon: ShoppingCart, label: 'Cart', badge: cartItems },
-    { id: 'wishlist' as TabType, icon: Heart, label: 'Wishlist', badge: wishlistItems },
+    { id: 'cart' as TabType, icon: ShoppingCart, label: 'Cart' },
+    { id: 'wishlist' as TabType, icon: Heart, label: 'Wishlist' },
     { id: 'profile' as TabType, icon: User, label: 'Profile' },
   ];
 
@@ -47,17 +42,6 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                     fill={isActive && tab.id === 'wishlist' ? 'currentColor' : 'none'}
                   />
                 </motion.div>
-                
-                {/* Badge */}
-                {tab.badge && tab.badge > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-2 -right-2 w-4 h-4 bg-primary text-primary-foreground text-[10px] font-bold rounded-full flex items-center justify-center"
-                  >
-                    {tab.badge > 9 ? '9+' : tab.badge}
-                  </motion.span>
-                )}
               </div>
               
               <span className="text-[10px] mt-1 font-medium">{tab.label}</span>
