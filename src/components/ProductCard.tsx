@@ -1,8 +1,6 @@
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product } from '@/data/products';
-import { useCart } from '@/context/CartContext';
-import { useWishlist } from '@/context/WishlistContext';
 
 interface ProductCardProps {
   product: Product;
@@ -10,10 +8,6 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onPress }: ProductCardProps) {
-  const { addToCart } = useCart();
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
-  const inWishlist = isInWishlist(product.id);
-
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -24,16 +18,12 @@ export default function ProductCard({ product, onPress }: ProductCardProps) {
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (inWishlist) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
+    // UI only - no action
   };
 
   const handleCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart(product);
+    // UI only - no action
   };
 
   return (
@@ -72,7 +62,7 @@ export default function ProductCard({ product, onPress }: ProductCardProps) {
         >
           <Heart 
             size={16} 
-            className={inWishlist ? 'fill-primary text-primary' : 'text-muted-foreground'} 
+            className="text-muted-foreground" 
           />
         </motion.button>
       </div>
