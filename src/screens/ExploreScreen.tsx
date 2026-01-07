@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SlidersHorizontal, Star, X } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-import { CATEGORIES, PRODUCTS, Category } from '@/data/products';
+import { CATEGORIES, PRODUCTS, Category, Product } from '@/data/products';
 
 interface ExploreScreenProps {
   initialCategoryId?: string;
+  onProductPress?: (product: Product) => void;
 }
 
-export default function ExploreScreen({ initialCategoryId }: ExploreScreenProps) {
+export default function ExploreScreen({ initialCategoryId, onProductPress }: ExploreScreenProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>(
     CATEGORIES.find(c => c.id === initialCategoryId) || CATEGORIES[0]
   );
@@ -119,7 +120,7 @@ export default function ExploreScreen({ initialCategoryId }: ExploreScreenProps)
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <ProductCard product={product} />
+                    <ProductCard product={product} onPress={() => onProductPress?.(product)} />
                   </motion.div>
                 ))}
               </div>

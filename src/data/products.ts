@@ -1,3 +1,8 @@
+export interface ProductSpec {
+  label: string;
+  value: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -7,11 +12,13 @@ export interface Product {
   price: number;
   originalPrice?: number;
   image: string;
+  images?: string[];
   rating: number;
   reviews: number;
   inStock: boolean;
   discount?: number;
   description: string;
+  specifications?: ProductSpec[];
 }
 
 export interface Category {
@@ -91,11 +98,27 @@ export const PRODUCTS: Product[] = [
     price: 24999,
     originalPrice: 29999,
     image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400",
+    images: [
+      "https://images.unsplash.com/photo-504328345606-18bbc8c9d7d1?w=800",
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800",
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800",
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800"
+    ],
     rating: 4.8,
     reviews: 124,
     inStock: true,
     discount: 17,
-    description: "High-performance hydraulic cylinder for ACE mobile cranes"
+    description: "High-performance hydraulic cylinder designed specifically for ACE mobile cranes. Features precision machining, hardened chrome rod, and premium seals for extended service life.",
+    specifications: [
+      { label: "Bore Diameter", value: "100 mm" },
+      { label: "Stroke Length", value: "800 mm" },
+      { label: "Rod Diameter", value: "56 mm" },
+      { label: "Max Pressure", value: "250 bar" },
+      { label: "Material", value: "High-tensile Steel" },
+      { label: "Seal Type", value: "Polyurethane" },
+      { label: "Mounting", value: "Clevis/Pin" },
+      { label: "Weight", value: "45 kg" }
+    ]
   },
   {
     id: "2",
@@ -106,11 +129,23 @@ export const PRODUCTS: Product[] = [
     price: 1299,
     originalPrice: 1499,
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+      "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800"
+    ],
     rating: 4.9,
     reviews: 312,
     inStock: true,
     discount: 13,
-    description: "Genuine ACE oil filter for optimal engine protection"
+    description: "Genuine ACE oil filter element providing superior filtration for optimal engine protection. Multi-layer synthetic media captures contaminants down to 10 microns.",
+    specifications: [
+      { label: "Filtration Rating", value: "10 microns" },
+      { label: "Height", value: "180 mm" },
+      { label: "Outer Diameter", value: "95 mm" },
+      { label: "Inner Diameter", value: "42 mm" },
+      { label: "Media Type", value: "Synthetic Blend" },
+      { label: "Flow Rate", value: "60 L/min" }
+    ]
   },
   {
     id: "3",
@@ -120,10 +155,23 @@ export const PRODUCTS: Product[] = [
     subCategory: "Valves",
     price: 45999,
     image: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800",
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800",
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800"
+    ],
     rating: 4.7,
     reviews: 67,
     inStock: true,
-    description: "Precision-engineered control valve for smooth crane operations"
+    description: "Precision-engineered control valve block for smooth and responsive crane operations. Features proportional flow control and integrated pressure relief.",
+    specifications: [
+      { label: "Sections", value: "6" },
+      { label: "Max Flow", value: "120 L/min" },
+      { label: "Max Pressure", value: "350 bar" },
+      { label: "Control Type", value: "Proportional" },
+      { label: "Spool Type", value: "Open Center" },
+      { label: "Weight", value: "28 kg" }
+    ]
   },
   {
     id: "4",
@@ -134,11 +182,23 @@ export const PRODUCTS: Product[] = [
     price: 8999,
     originalPrice: 10999,
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800"
+    ],
     rating: 4.6,
     reviews: 89,
     inStock: true,
     discount: 18,
-    description: "Complete sensor kit for boom position monitoring"
+    description: "Complete sensor kit for accurate boom position monitoring. Includes angle sensor, limit switches, and all necessary wiring harnesses.",
+    specifications: [
+      { label: "Sensor Type", value: "Rotary Encoder" },
+      { label: "Accuracy", value: "±0.5°" },
+      { label: "Range", value: "0-85°" },
+      { label: "Output Signal", value: "4-20mA" },
+      { label: "IP Rating", value: "IP67" },
+      { label: "Cable Length", value: "5m" }
+    ]
   },
   {
     id: "5",
@@ -148,10 +208,22 @@ export const PRODUCTS: Product[] = [
     subCategory: "Undercarriage",
     price: 12499,
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800",
+      "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800"
+    ],
     rating: 4.5,
     reviews: 56,
     inStock: false,
-    description: "Heavy-duty track roller for crawler cranes"
+    description: "Heavy-duty track roller designed for crawler cranes. Features sealed bearings and hardened running surfaces for extended service life.",
+    specifications: [
+      { label: "Flange Diameter", value: "220 mm" },
+      { label: "Tread Width", value: "85 mm" },
+      { label: "Bearing Type", value: "Sealed Roller" },
+      { label: "Shaft Diameter", value: "50 mm" },
+      { label: "Load Capacity", value: "15 tons" },
+      { label: "Weight", value: "32 kg" }
+    ]
   },
   {
     id: "6",
@@ -162,11 +234,23 @@ export const PRODUCTS: Product[] = [
     price: 18999,
     originalPrice: 22999,
     image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800"
+    ],
     rating: 4.9,
     reviews: 178,
     inStock: true,
     discount: 17,
-    description: "Ergonomic operator seat with lumbar support and suspension"
+    description: "Ergonomic operator seat with adjustable lumbar support, air suspension, and heating. Designed for all-day comfort in demanding work environments.",
+    specifications: [
+      { label: "Suspension", value: "Air" },
+      { label: "Weight Range", value: "50-130 kg" },
+      { label: "Armrests", value: "Adjustable" },
+      { label: "Lumbar Support", value: "Yes" },
+      { label: "Heating", value: "Yes" },
+      { label: "Material", value: "Fabric/Vinyl" }
+    ]
   },
   {
     id: "7",
@@ -176,10 +260,23 @@ export const PRODUCTS: Product[] = [
     subCategory: "Pumps",
     price: 89999,
     image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800",
+      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800",
+      "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800"
+    ],
     rating: 4.8,
     reviews: 45,
     inStock: true,
-    description: "High-pressure main hydraulic pump for crane operations"
+    description: "High-pressure main hydraulic pump designed for continuous heavy-duty crane operations. Variable displacement for optimal efficiency.",
+    specifications: [
+      { label: "Displacement", value: "140 cc/rev" },
+      { label: "Max Pressure", value: "350 bar" },
+      { label: "Max Speed", value: "2200 rpm" },
+      { label: "Type", value: "Axial Piston" },
+      { label: "Drive", value: "Spline Shaft" },
+      { label: "Weight", value: "52 kg" }
+    ]
   },
   {
     id: "8",
@@ -190,12 +287,32 @@ export const PRODUCTS: Product[] = [
     price: 4999,
     originalPrice: 5999,
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+    images: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800"
+    ],
     rating: 4.7,
     reviews: 234,
     inStock: true,
     discount: 17,
-    description: "High-intensity LED work lights for night operations"
+    description: "High-intensity LED work light kit for night operations. Includes 4 lights with mounting brackets and wiring harness.",
+    specifications: [
+      { label: "Lumens", value: "4800 lm" },
+      { label: "Power", value: "48W" },
+      { label: "Voltage", value: "12-24V DC" },
+      { label: "Beam Angle", value: "60°" },
+      { label: "IP Rating", value: "IP68" },
+      { label: "Lights Included", value: "4" }
+    ]
   }
 ];
 
 export const FEATURED_PRODUCTS = PRODUCTS.filter(p => p.discount && p.discount > 0);
+
+export const getProductById = (id: string): Product | undefined => {
+  return PRODUCTS.find(p => p.id === id);
+};
+
+export const getRelatedProducts = (product: Product, limit: number = 4): Product[] => {
+  return PRODUCTS.filter(p => p.id !== product.id && p.category === product.category).slice(0, limit);
+};

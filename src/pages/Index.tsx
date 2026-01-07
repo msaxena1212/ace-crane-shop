@@ -7,6 +7,8 @@ import ExploreScreen from '@/screens/ExploreScreen';
 import CartScreen from '@/screens/CartScreen';
 import WishlistScreen from '@/screens/WishlistScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
+import ProductDetailScreen from '@/screens/ProductDetailScreen';
+import { Product } from '@/data/products';
 
 type TabType = 'home' | 'explore' | 'cart' | 'wishlist' | 'profile';
 
@@ -14,6 +16,7 @@ export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [exploreCategoryId, setExploreCategoryId] = useState<string | undefined>();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const handleNavigateToExplore = (categoryId?: string) => {
     setExploreCategoryId(categoryId);
@@ -27,8 +30,27 @@ export default function Index() {
     setActiveTab(tab);
   };
 
+  const handleProductPress = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleBackFromProduct = () => {
+    setSelectedProduct(null);
+  };
+
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+
+  // Show product detail screen if a product is selected
+  if (selectedProduct) {
+    return (
+      <ProductDetailScreen 
+        product={selectedProduct} 
+        onBack={handleBackFromProduct}
+        onProductPress={handleProductPress}
+      />
+    );
   }
 
   return (
@@ -43,10 +65,16 @@ export default function Index() {
           className="min-h-screen"
         >
           {activeTab === 'home' && (
-            <HomeScreen onNavigateToExplore={handleNavigateToExplore} />
+            <HomeScreen 
+              onNavigateToExplore={handleNavigateToExplore} 
+              onProductPress={handleProductPress}
+            />
           )}
           {activeTab === 'explore' && (
-            <ExploreScreen initialCategoryId={exploreCategoryId} />
+            <ExploreScreen 
+              initialCategoryId={exploreCategoryId} 
+              onProductPress={handleProductPress}
+            />
           )}
           {activeTab === 'cart' && <CartScreen />}
           {activeTab === 'wishlist' && <WishlistScreen />}
